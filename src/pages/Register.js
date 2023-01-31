@@ -73,13 +73,21 @@ const Register = () => {
             </div>
           )}
           {/* email input */}
-          <label className='form-label' htmlFor='email'>
-            Email
+          <label
+            style={{ textTransform: 'lowercase' }}
+            className='form-label'
+            htmlFor='email'
+          >
+            Email - jobprojectrehman@gmail.com
           </label>
           <input className='form-input' ref={emailRef} type='text' />
           {/* name input */}
-          <label className='form-label' htmlFor='password'>
-            Password
+          <label
+            style={{ textTransform: 'lowercase' }}
+            className='form-label'
+            htmlFor='password'
+          >
+            Password - jobprojectrehman
           </label>
           <input className='form-input' ref={passwordRef} type='password' />
           <div className='login-register-forget'>
