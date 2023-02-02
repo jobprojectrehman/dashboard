@@ -1,26 +1,22 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { hideProductWarning } from '../../features/functions/functionSlice'
-import { deleteProductsThunk } from '../../features/products/productSlice'
+import { hideDeleteAllWarning } from '../features/functions/functionSlice'
 
-const ProductWarning = () => {
-  const { product } = useSelector((state) => state)
-
-  const { productDeleteId } = product
+const DeleteAllWarning = ({ action }) => {
   const dispatch = useDispatch()
-  const handleYes = () => {
-    dispatch(deleteProductsThunk(productDeleteId))
-    dispatch(hideProductWarning())
+  const handleYes = async () => {
+    action()
+    dispatch(hideDeleteAllWarning())
   }
   return (
     <Wrapper>
       <div className='background'></div>
       <div className='container'>
-        <p>Do you really want to delete this product ?</p>
+        <p>Are you sure about your action ?</p>
         <div className='button'>
           <button
-            onClick={() => dispatch(hideProductWarning())}
+            onClick={() => dispatch(hideDeleteAllWarning())}
             className='btn'
           >
             No
@@ -35,6 +31,10 @@ const ProductWarning = () => {
 }
 
 const Wrapper = styled.div`
+  position: fixed;
+  bottom: 0;
+  right: 0;
+
   .background {
     position: fixed;
     background-color: var(--grey-8);
@@ -58,4 +58,4 @@ const Wrapper = styled.div`
     justify-content: space-around;
   }
 `
-export default ProductWarning
+export default DeleteAllWarning
