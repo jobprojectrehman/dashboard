@@ -20,6 +20,7 @@ const initialState = {
   deleteId: '',
   updateId: '',
   refreshData: false,
+  deleteMany: [],
   isLoading: false,
 }
 
@@ -71,6 +72,25 @@ export const deleteSingleOrderThunk = createAsyncThunk(
       })
       return response.data
     } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
+  }
+)
+// ==== DeleteOrders ====
+
+export const deleteManyOrdersThunk = createAsyncThunk(
+  'contact/deleteManyOrdersThunk',
+  async (data, thunkAPI) => {
+    const user = getUserFromLocalStorage()
+    try {
+      const response = await customFetch.patch(`/admin/orders`, data, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      })
+      return response.data
+    } catch (error) {
+      console.log(error.response)
       return thunkAPI.rejectWithValue(error.response.data)
     }
   }
@@ -154,6 +174,21 @@ const orderSlice = createSlice({
       state.isLoading = false
     },
     [deleteSingleOrderThunk.rejected]: (state, { payload }) => {
+      toast.error(`${payload?.msg ? payload.msg : payload}`)
+      state.isLoading = false
+    },
+    // === Delete Many Orders LIST
+    [deleteManyOrdersThunk.pending]: (state, { payload }) => {
+      state.isLoading = true
+    },
+    [deleteManyOrdersThunk.fulfilled]: (state, { payload }) => {
+      state.refreshData = !state.refreshData
+      state.deleteMany = []
+      toast.success(payload.msg)
+      state.isLoading = false
+    },
+    [deleteManyOrdersThunk.rejected]: (state, { payload }) => {
+      console.log(payload)
       toast.error(`${payload?.msg ? payload.msg : payload}`)
       state.isLoading = false
     },
