@@ -5,12 +5,17 @@ import { formatDate, formatPrice } from '../../utils/helper'
 import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBack2Line } from 'react-icons/ri'
 import Warning from '../Warning'
-import { showWarning } from '../../features/functions/functionSlice'
 import {
+  showDeleteAllWarning,
+  showWarning,
+} from '../../features/functions/functionSlice'
+import {
+  deleteManyProductsThunk,
   deleteProductsThunk,
   getStateValues,
 } from '../../features/products/productSlice'
 import ListWrapper from '../../Wrapper/dashboard/ListWrapper'
+import DeleteAllWarning from '../DeleteAllWarning'
 
 const List = () => {
   const dispatch = useDispatch()
@@ -22,7 +27,33 @@ const List = () => {
     dispatch(getStateValues({ name, value }))
     dispatch(showWarning())
   }
+  // =======deleteMany  =======
+  const handleSelectAll = () => {
+    if (product.list.length === product.deleteMany.length) {
+      dispatch(getStateValues({ name: 'deleteMany', value: [] }))
+      return
+    }
+    dispatch(getStateValues({ name: 'deleteMany', value: product.list }))
+  }
+  const handleSelectOne = (_id) => {
+    if (product.deleteMany.find((item) => item._id === _id)) {
+      dispatch(
+        getStateValues({
+          name: 'deleteMany',
+          value: product.deleteMany.filter((item) => item._id !== _id),
+        })
+      )
+      return
+    }
+    const result = product.list.find((item) => item._id === _id)
+    const newValue = [...product.deleteMany, result]
+    dispatch(getStateValues({ name: 'deleteMany', value: newValue }))
+  }
 
+  const handleDeleteMany = () => {
+    dispatch(showDeleteAllWarning())
+  }
+  // =======deleteMany =======
   if (product.isLoading) {
     return (
       <div>
@@ -39,10 +70,34 @@ const List = () => {
           action={() => dispatch(deleteProductsThunk(product.deleteId))}
         />
       )}
+      {/* show Delete All warning */}
+      {warningHolder.deleteAllWarning && (
+        <DeleteAllWarning
+          action={() => dispatch(deleteManyProductsThunk(product.deleteMany))}
+        />
+      )}
+
+      {/* show delete all button */}
+      <div className='delete-all-button'>
+        {product.deleteMany.length > 0 && (
+          <div className='delete-all-button'>
+            <button className='btn' onClick={handleDeleteMany}>
+              Delete Selected
+            </button>
+          </div>
+        )}
+      </div>
       {/* show table */}
       <table>
         <tbody>
           <tr>
+            <th>
+              <input
+                type='checkbox'
+                checked={product.deleteMany.length === product.list.length}
+                onChange={handleSelectAll}
+              />
+            </th>
             <th>PRODUCT IMAGE</th>
             <th>TITLE</th>
             <th>CATEGORY</th>
@@ -56,6 +111,17 @@ const List = () => {
           {product.list?.map((item) => {
             return (
               <tr key={item._id}>
+                <td>
+                  <input
+                    type='checkbox'
+                    checked={
+                      product.deleteMany.find((items) => items._id === item._id)
+                        ? true
+                        : false
+                    }
+                    onChange={() => handleSelectOne(item._id)}
+                  />
+                </td>
                 <td className='image-holder'>
                   <img src={item.uploadImage[0].secure_url} alt={item.title} />
                 </td>

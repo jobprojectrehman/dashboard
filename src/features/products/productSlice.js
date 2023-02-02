@@ -40,6 +40,7 @@ const initialState = {
   productsList: [],
   productDeleteId: '',
   getProducts: false,
+  deleteMany: [],
   isLoading: false,
 }
 
@@ -151,7 +152,26 @@ export const deleteProductsThunk = createAsyncThunk(
     }
   }
 )
+// ==== Delete Many CONTACTS====Start
 
+export const deleteManyProductsThunk = createAsyncThunk(
+  'product/deleteManyProductsThunk',
+  async (data, thunkAPI) => {
+    const user = getUserFromLocalStorage()
+    try {
+      const response = await customFetch.patch(`products`, data, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      })
+      return response.data
+    } catch (error) {
+      console.log(error.response)
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
+  }
+)
+// ==== Delete Many CONTACTS====END
 const productSlice = createSlice({
   name: 'product',
   initialState,
@@ -283,6 +303,21 @@ const productSlice = createSlice({
       state.isLoading = false
     },
     [deleteProductsThunk.rejected]: (state, { payload }) => {
+      toast.error(`${payload?.msg ? payload.msg : payload}`)
+      state.isLoading = false
+    },
+    // === Delete Many CONTACTS LIST
+    [deleteManyProductsThunk.pending]: (state, { payload }) => {
+      state.isLoading = true
+    },
+    [deleteManyProductsThunk.fulfilled]: (state, { payload }) => {
+      state.refreshData = !state.refreshData
+      state.deleteMany = []
+      toast.success(payload.msg)
+      state.isLoading = false
+    },
+    [deleteManyProductsThunk.rejected]: (state, { payload }) => {
+      console.log(payload)
       toast.error(`${payload?.msg ? payload.msg : payload}`)
       state.isLoading = false
     },
