@@ -18,6 +18,7 @@ const initialState = {
   refreshData: false,
   singleContact: [],
   deleteId: '',
+  deleteMany: [],
   isLoading: false,
 }
 
@@ -94,6 +95,26 @@ export const deleteSingleContactThunk = createAsyncThunk(
     }
   }
 )
+// ==== Delete Many CONTACTS====Start
+
+export const deleteManyContactsThunk = createAsyncThunk(
+  'contact/deleteManyContactsThunk',
+  async (data, thunkAPI) => {
+    const user = getUserFromLocalStorage()
+    try {
+      const response = await customFetch.patch(`contacts`, data, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      })
+      return response.data
+    } catch (error) {
+      console.log(error.response)
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
+  }
+)
+// ==== Delete Many CONTACTS====END
 
 const contactSlice = createSlice({
   name: 'contact',
@@ -168,6 +189,21 @@ const contactSlice = createSlice({
       state.isLoading = false
     },
     [deleteSingleContactThunk.rejected]: (state, { payload }) => {
+      toast.error(`${payload?.msg ? payload.msg : payload}`)
+      state.isLoading = false
+    },
+    // === Delete Many CONTACTS LIST
+    [deleteManyContactsThunk.pending]: (state, { payload }) => {
+      state.isLoading = true
+    },
+    [deleteManyContactsThunk.fulfilled]: (state, { payload }) => {
+      state.refreshData = !state.refreshData
+      state.deleteMany = []
+      toast.success(payload.msg)
+      state.isLoading = false
+    },
+    [deleteManyContactsThunk.rejected]: (state, { payload }) => {
+      console.log(payload)
       toast.error(`${payload?.msg ? payload.msg : payload}`)
       state.isLoading = false
     },
