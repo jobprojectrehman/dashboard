@@ -1,6 +1,12 @@
 import styled from 'styled-components'
 
 const ListWrapper = styled.div`
+  .delete-all-button {
+    min-height: 30px;
+    button {
+      height: 30px;
+    }
+  }
   table {
     text-align: center;
     tbody {
