@@ -21,6 +21,7 @@ const Search = () => {
     sort,
     page,
     limit,
+    refreshData,
   } = useSelector((state) => state.user)
 
   const handleClear = () => {
@@ -58,6 +59,7 @@ const Search = () => {
     sort,
     page,
     limit,
+    refreshData,
   ])
   return (
     <SearchWrapper className='container'>
