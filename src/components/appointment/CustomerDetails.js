@@ -7,6 +7,7 @@ import {
   clearState,
   getStateValues,
 } from '../../features/appointment/appointmentSlice'
+import { isObjectEmpty } from '../../utils/helper'
 
 const CustomerDetails = ({ action }) => {
   const dispatch = useDispatch()
@@ -15,7 +16,7 @@ const CustomerDetails = ({ action }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!date || !slot || !name || !email || !phone) {
+    if (!date || isObjectEmpty(slot) || !name || !email || !phone) {
       return toast.warning('Please fill all details.')
     }
     if (updateId === '') {
@@ -74,7 +75,7 @@ const CustomerDetails = ({ action }) => {
 }
 const Wrapper = styled.div`
   form {
-    min-width: 90vw;
+    min-width: 80vw;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
