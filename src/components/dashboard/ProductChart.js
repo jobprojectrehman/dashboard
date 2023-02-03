@@ -31,13 +31,20 @@ const ProductChart = () => {
       })
       // All Item stock
       const stockArray = categoriesResult.map((item) => item.totalStock)
+      // Total counted item
+      const totalItemsCount = categoriesResult.map((item) => item.category)
+
       // Add Stock
       const total = stockArray.reduce((acc, value) => {
         const count = acc + value
         return count
       }, 0)
       // Convert in data
-      const finalResult = { category: item, TotalStock: total }
+      const finalResult = {
+        category: item,
+        TotalStock: total,
+        TotalItems: totalItemsCount.length,
+      }
 
       return finalResult
     })
@@ -57,7 +64,7 @@ const ProductChart = () => {
         <Tooltip />
         <Legend />
         <Bar dataKey='TotalStock' fill='#8884d8' />
-        {/* <Bar dataKey='uv' fill='#82ca9d' /> */}
+        <Bar dataKey='TotalItems' fill='#82ca9d' />
       </BarChart>
     </div>
   )
