@@ -16,8 +16,6 @@ const initialState = {
 const ProductChart = () => {
   const [state, setState] = useState(initialState)
 
-  let width = window.screen.width - 250
-
   const getData = async () => {
     const result = await customFetch('/products/static')
     const products = result.data.products
@@ -56,8 +54,8 @@ const ProductChart = () => {
     // eslint-disable-next-line
   }, [])
   return (
-    <div>
-      <BarChart width={width} height={250} data={state.data}>
+    <>
+      <BarChart width={800} height={250} data={state.data}>
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis dataKey='category' />
         <YAxis />
@@ -66,7 +64,7 @@ const ProductChart = () => {
         <Bar dataKey='TotalStock' fill='#8884d8' />
         <Bar dataKey='TotalItems' fill='#82ca9d' />
       </BarChart>
-    </div>
+    </>
   )
 }
 

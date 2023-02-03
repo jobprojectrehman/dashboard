@@ -7,7 +7,7 @@ import { getOrdersThunk } from '../../features/order/orderSlice'
 import { getContactThunk } from '../../features/contact/contactSlice'
 import { getUsersThunk } from '../../features/user/userSlice'
 import { appointmentThunk } from '../../features/appointment/appointmentSlice'
-import { ProductChart } from '../../components/dashboard'
+import { CountAllChart, ProductChart } from '../../components/dashboard'
 
 const DashboardHome = () => {
   const { product, order, contact, user, appointment } = useSelector(
@@ -26,48 +26,61 @@ const DashboardHome = () => {
   }, [])
   return (
     <Wrapper>
-      <div className='card-holder'>
-        {/* Product Card */}
-        <DashboardTotalCard
-          title={`Products`}
-          total={product.count}
-          navigateLink={'/dashboard/products'}
-        />
-        {/* Order Card */}
-        <DashboardTotalCard
-          title={`Orders`}
-          total={order.count}
-          navigateLink={'/dashboard/orders'}
-        />
-        {/* Contact Card */}
-        <DashboardTotalCard
-          title={`Contacts`}
-          total={contact.count}
-          navigateLink={'/dashboard/Contact'}
-        />
-        {/* User Card */}
-        <DashboardTotalCard
-          title={`Users`}
-          total={user?.count}
-          navigateLink={'/dashboard/users'}
-        />
-        {/* User Card */}
-        <DashboardTotalCard
-          title={`Appointment`}
-          total={appointment?.count}
-          navigateLink={'/dashboard/appointment'}
-        />
+      <div className='container'>
+        <div className='total-card'>
+          {/* Product Card */}
+          <DashboardTotalCard
+            title={`Products`}
+            total={product.count}
+            navigateLink={'/dashboard/products'}
+          />
+          {/* Order Card */}
+          <DashboardTotalCard
+            title={`Orders`}
+            total={order.count}
+            navigateLink={'/dashboard/orders'}
+          />
+          {/* Contact Card */}
+          <DashboardTotalCard
+            title={`Contacts`}
+            total={contact.count}
+            navigateLink={'/dashboard/Contact'}
+          />
+          {/* User Card */}
+          <DashboardTotalCard
+            title={`Users`}
+            total={user?.count}
+            navigateLink={'/dashboard/users'}
+          />
+          {/* Appointment Card */}
+          <DashboardTotalCard
+            title={`Appointments`}
+            total={appointment?.count}
+            navigateLink={'/dashboard/appointment'}
+          />
+        </div>
+        <CountAllChart className='count-chart' />
       </div>
-      <ProductChart />
+      <div className='product-chart'>
+        <ProductChart className='product-holder' />
+      </div>
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
-  .card-holder {
+  .container {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    .recharts-wrapper {
+      background-color: var(--white);
+      box-shadow: var(--shadow-2);
+    }
+  }
+  .total-card {
     display: flex;
-    flex-wrap: wrap;
-    padding: 1rem;
-    gap: 1rem;
+  }
+
+  .recharts-wrapper {
   }
 `
 export default DashboardHome

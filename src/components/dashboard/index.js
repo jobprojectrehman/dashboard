@@ -1,7 +1,15 @@
 import ChangePassword from './ChangePassword'
+import CountAllChart from './CountAllChart'
 import DashboardNav from './DashboardNav'
 import ProductChart from './ProductChart'
 import SideBar from './SideBar'
 import WebsiteContent from './WebsiteContent'
 
-export { ProductChart, SideBar, DashboardNav, ChangePassword, WebsiteContent }
+export {
+  CountAllChart,
+  ProductChart,
+  SideBar,
+  DashboardNav,
+  ChangePassword,
+  WebsiteContent,
+}
