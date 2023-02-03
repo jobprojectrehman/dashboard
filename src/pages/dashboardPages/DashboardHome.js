@@ -59,18 +59,16 @@ const DashboardHome = () => {
             navigateLink={'/dashboard/appointment'}
           />
         </div>
-        <CountAllChart className='count-chart' />
+        <div className='product-chart'>
+          <ProductChart className='product-holder' />
+        </div>
       </div>
-      <div className='product-chart'>
-        <ProductChart className='product-holder' />
-      </div>
+      <CountAllChart className='count-chart' />
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
   .container {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
     .recharts-wrapper {
       background-color: var(--white);
       box-shadow: var(--shadow-2);

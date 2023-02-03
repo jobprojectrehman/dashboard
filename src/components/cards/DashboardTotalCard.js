@@ -9,26 +9,47 @@ const DashboardTotalCard = ({ total, navigateLink, title }) => {
   }
   return (
     <Wrapper onClick={handleClick} className='container'>
-      <div className='box-1'>
-        <span>{title}: </span>
-        <span>
-          <strong> {total}</strong>
-        </span>
+      <div className='box'>
+        <div className='heading'>
+          <p className='title'>{title}</p>
+          <div className=' title-underline'></div>
+        </div>
+        <div className='body'>
+          <span>Total: </span>
+          <span>
+            <strong>{total}</strong>
+          </span>
+        </div>
       </div>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
-  padding: 5px;
-  box-shadow: var(--shadow-2);
-  margin-right: 5px;
-  background-color: var(--white);
-  height: fit-content;
-  transition: var(--transition);
-  :hover {
-    cursor: pointer;
-    box-shadow: var(--shadow-3);
+  width: 100%;
+
+  .box {
+    background-color: var(--white);
+    margin: 10px;
+    margin-top: 0;
+    border-top: 2px solid var(--primary-2);
+    .heading {
+      p {
+        margin-top: 0;
+        text-transform: uppercase;
+      }
+    }
+    box-shadow: var(--shadow-2);
+    padding: 5px;
+    transition: var(--transition);
+    :hover {
+      cursor: pointer;
+      box-shadow: var(--shadow-4);
+    }
+  }
+  .body {
+    display: flex;
+    justify-content: space-evenly;
   }
 `
 export default DashboardTotalCard
