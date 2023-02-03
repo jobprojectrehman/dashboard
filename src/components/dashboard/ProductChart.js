@@ -72,6 +72,10 @@ const ProductChart = () => {
   )
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  line {
+    display: none;
+  }
+`
 
 export default ProductChart
