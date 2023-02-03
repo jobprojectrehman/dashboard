@@ -59,26 +59,31 @@ const DashboardHome = () => {
             navigateLink={'/dashboard/appointment'}
           />
         </div>
-        <div className='product-chart'>
-          <ProductChart className='product-holder' />
+        <div className='charts'>
+          <ProductChart />
+          <div className='total-chart'>
+            <CountAllChart />
+          </div>
         </div>
       </div>
-      <CountAllChart className='count-chart' />
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
+  .charts {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
   .container {
-    .recharts-wrapper {
-      background-color: var(--white);
-      box-shadow: var(--shadow-2);
-    }
   }
   .total-card {
     display: flex;
   }
 
   .recharts-wrapper {
+  }
+  @media (max-width: 1024px) {
   }
 `
 export default DashboardHome

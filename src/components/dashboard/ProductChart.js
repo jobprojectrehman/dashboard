@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Bar,
   BarChart,
@@ -8,6 +8,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import styled from 'styled-components'
 import { customFetch } from '../../utils/axios'
 
 const initialState = {
@@ -15,6 +16,8 @@ const initialState = {
 }
 const ProductChart = () => {
   const [state, setState] = useState(initialState)
+  const containerWidthRef = useRef()
+  const width = containerWidthRef.current?.clientWidth
 
   const getData = async () => {
     const result = await customFetch('/products/static')
@@ -49,13 +52,14 @@ const ProductChart = () => {
 
     setState({ ...state, data: totalStock })
   }
+
   useEffect(() => {
     getData()
     // eslint-disable-next-line
   }, [])
   return (
-    <>
-      <BarChart width={800} height={250} data={state.data}>
+    <Wrapper ref={containerWidthRef}>
+      <BarChart width={width} height={250} data={state.data}>
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis dataKey='category' />
         <YAxis />
@@ -64,8 +68,10 @@ const ProductChart = () => {
         <Bar dataKey='TotalStock' fill='#8884d8' />
         <Bar dataKey='TotalItems' fill='#82ca9d' />
       </BarChart>
-    </>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div``
 
 export default ProductChart
