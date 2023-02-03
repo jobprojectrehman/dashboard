@@ -73,16 +73,28 @@ const Wrapper = styled.div`
   .charts {
     display: grid;
     grid-template-columns: 1fr auto;
+    gap: 1rem;
+  }
+  .total-chart {
+    background-color: white;
+    span {
+      background-color: var(--white);
+    }
   }
 
-  .container {
-  }
   .total-card {
     display: flex;
   }
 
   .recharts-wrapper {
+    background-color: var(--white);
+    box-shadow: var(--shadow-3);
+    transition: var(--transition);
+    :hover {
+      box-shadow: var(--shadow-4);
+    }
   }
+
   @media (max-width: 1024px) {
   }
 `
