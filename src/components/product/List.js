@@ -133,7 +133,7 @@ const List = () => {
                 <td>{item.feature ? 'Feature' : null}</td>
                 <td>{formatPrice(item.amount)}</td>
                 <td className='buttons'>
-                  <Link className='btn' to={item._id}>
+                  <Link className='btn' to={`/dashboard/products/${item._id}`}>
                     <FiEdit />
                   </Link>
                   <button

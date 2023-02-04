@@ -126,7 +126,7 @@ const List = () => {
                 <td>{item.subject}</td>
                 <td>{formatDate(item.createdAt)}</td>
                 <td className='buttons'>
-                  <Link className='btn' to={`${item._id}`}>
+                  <Link className='btn' to={`/dashboard/contact/${item._id}`}>
                     <FiEdit />
                   </Link>
                   <button

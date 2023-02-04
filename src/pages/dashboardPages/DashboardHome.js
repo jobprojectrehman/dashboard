@@ -7,7 +7,13 @@ import { getOrdersThunk } from '../../features/order/orderSlice'
 import { getContactThunk } from '../../features/contact/contactSlice'
 import { getUsersThunk } from '../../features/user/userSlice'
 import { appointmentThunk } from '../../features/appointment/appointmentSlice'
-import { CountAllChart, ProductChart } from '../../components/dashboard'
+import {
+  CountAllChart,
+  NewContactUs,
+  NewRegisterOrders,
+  NewRegisterUsers,
+  ProductChart,
+} from '../../components/dashboard'
 
 const DashboardHome = () => {
   const { product, order, contact, user, appointment } = useSelector(
@@ -65,6 +71,11 @@ const DashboardHome = () => {
             <CountAllChart />
           </div>
         </div>
+        <div className='new-users'>
+          <NewRegisterUsers />
+          <NewRegisterOrders />
+          <NewContactUs />
+        </div>
       </div>
     </Wrapper>
   )
@@ -74,6 +85,7 @@ const Wrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 1rem;
+    padding: 10px;
   }
   .total-chart {
     background-color: white;

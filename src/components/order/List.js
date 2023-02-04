@@ -167,7 +167,7 @@ const List = () => {
                 <td>{item.shipment ? `completed` : `Processing`}</td>
                 <td>{formatDate(item.date)}</td>
                 <td>
-                  <Link className='btn' to={`${item._id}`}>
+                  <Link className='btn' to={`/dashboard/orders/${item._id}`}>
                     <FiEdit />
                   </Link>
                   <button

@@ -133,7 +133,10 @@ const List = () => {
                 <td>{item.slot?.endTime}</td>
                 <td>{formatDate(item.date.split('T')[0])}</td>
                 <td>
-                  <Link className='btn' to={`${item._id}`}>
+                  <Link
+                    className='btn'
+                    to={`/dashboard/appointment/${item._id}`}
+                  >
                     <FiEdit />
                   </Link>
                   <button
