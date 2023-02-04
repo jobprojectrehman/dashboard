@@ -2,7 +2,6 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import styled from 'styled-components'
 import { customFetch } from '../../../utils/axios'
 import {
   getItemFromLocalStorage,
@@ -10,6 +9,7 @@ import {
   removeItemFromLocalStorage,
   setItemInLocalStorage,
 } from '../../../utils/localStorage'
+import { SectionOneTwoThreeWrapper } from '../../../Wrapper/websitecontent/SectionOneTwoThreeWrapper'
 import FormInput from '../../FormInput'
 import UploadImage from '../../UploadImage'
 
@@ -105,25 +105,27 @@ const ContentSectionTwo = () => {
     )
   }
   return (
-    <Wrapper>
+    <SectionOneTwoThreeWrapper>
       <strong className='top'>Section -2</strong>
-      <div className='top-image'>
-        <img src={state.uploadImage[0]?.secure_url} alt='' />
-      </div>
+
       <div className='box'>
         <strong>Step-1. </strong>
         <p>Upload your Image</p>
       </div>
       <hr />
-      <div className='upload-image'>
-        <UploadImage
-          path={`/sectionTwo/${state._id}`}
-          cbFunction={cbFunction}
-          state={state}
-          setState={setState}
-        />
+      <div className='image-box'>
+        <div className='upload-image'>
+          <UploadImage
+            path={`/sectionTwo/${state._id}`}
+            cbFunction={cbFunction}
+            state={state}
+            setState={setState}
+          />
+        </div>
+        <div className='top-image'>
+          <img src={state.uploadImage[0]?.secure_url} alt='' />
+        </div>
       </div>
-
       <hr />
       <div className='box'>
         <strong>Step-2. </strong>
@@ -183,40 +185,8 @@ const ContentSectionTwo = () => {
           </div>
         </div>
       </form>
-    </Wrapper>
+    </SectionOneTwoThreeWrapper>
   )
 }
 
-const Wrapper = styled.div`
-  .top {
-    position: absolute;
-    right: 5%;
-  }
-  .top-image {
-    max-width: 135px;
-    max-height: 135px;
-    position: absolute;
-    right: 10%;
-    top: 28%;
-    img {
-      width: 100%;
-    }
-  }
-  .box {
-    display: flex;
-    p {
-      margin: 0;
-      margin-left: 1rem;
-    }
-  }
-  .upload-image {
-    height: 120px;
-  }
-  .form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    max-width: 80vw;
-  }
-`
 export default ContentSectionTwo
