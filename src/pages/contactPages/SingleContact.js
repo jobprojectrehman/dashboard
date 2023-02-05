@@ -3,16 +3,28 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { getSingleContactThunk } from '../../features/contact/contactSlice'
+import Warning from '../../components/Warning'
+import {
+  deleteSingleContactThunk,
+  getSingleContactThunk,
+  getStateValues,
+} from '../../features/contact/contactSlice'
+import { showWarning } from '../../features/functions/functionSlice'
 
 const SingleContact = () => {
   const dispatch = useDispatch()
   const { _id } = useParams()
-  const { singleContact, isLoading } = useSelector((state) => state.contact)
+  const { contact, function: warningHolder } = useSelector((state) => state)
+  const { singleContact, isLoading } = contact
 
   // handleDelete
 
-  const handleDelete = () => {}
+  const handleDelete = () => {
+    const name = 'deleteId'
+    const value = _id
+    dispatch(getStateValues({ name, value }))
+    dispatch(showWarning())
+  }
   useEffect(() => {
     dispatch(getSingleContactThunk(_id))
     // eslint-disable-next-line
@@ -27,6 +39,12 @@ const SingleContact = () => {
   }
   return (
     <Wrapper>
+      {/* Show warning  */}
+      {warningHolder.warning && (
+        <Warning
+          action={() => dispatch(deleteSingleContactThunk(contact.deleteId))}
+        />
+      )}
       <table>
         <tbody>
           <tr>
