@@ -149,7 +149,7 @@ const Wrapper = styled.div`
   }
   .stock {
     select {
-      color: black;
+      color: var(--grey-9);
     }
   }
   .feature {

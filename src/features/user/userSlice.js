@@ -14,12 +14,19 @@ const initialState = {
   name: '',
   lastName: '',
   dateOfBirth: '',
+  gender: 'male',
   phone: '',
   email: '',
-  address: '',
+  // Address details
+  apartment: '',
+  house: '',
+  street: '',
   city: '',
   province: '',
+  country: '',
   postalCode: '',
+  place_id: '',
+  formatted_address: '',
 
   // Authentication User
   token: user?.token || '',
@@ -178,7 +185,7 @@ export const getUsersThunk = createAsyncThunk(
     const user = getUserFromLocalStorage()
     try {
       const response = await customFetch.get(
-        `/auth/users?name=${state?.searchName}&phone=${state?.searchPhone}&email=${state?.searchEmail}&postalCode=${state?.searchPostalCode}&address=${state?.searchAddress}&_id=${state?.searchId}&limit=${state?.limit}&sort=${state?.sort}&page=${state?.page}`,
+        `/auth/users?name=${state?.searchName}&phone=${state?.searchPhone}&email=${state?.searchEmail}&postalCode=${state?.searchPostalCode}&street=${state?.searchAddress}&_id=${state?.searchId}&limit=${state?.limit}&sort=${state?.sort}&page=${state?.page}`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
@@ -261,10 +268,13 @@ const userSlice = createSlice({
     clearState: (state, { payload }) => {
       state.name = ''
       state.lastName = ''
+      state.gender = 'male'
       state.dateOfBirth = ''
       state.phone = ''
       state.email = ''
-      state.address = ''
+      state.apartment = ''
+      state.house = ''
+      state.street = ''
       state.city = ''
       state.province = ''
       state.postalCode = ''
@@ -290,6 +300,10 @@ const userSlice = createSlice({
     getStateValues: (state, { payload }) => {
       const { name, value } = payload
       state[name] = value
+    },
+    getAddressValues: (state, { payload }) => {
+      console.log(payload)
+      addObjectInState(payload, state)
     },
 
     //======pagination=======
@@ -459,6 +473,7 @@ const userSlice = createSlice({
   },
 })
 export const {
+  getAddressValues,
   getStateValues,
   clearState,
   next,

@@ -1,19 +1,30 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import styled from 'styled-components'
 import { clearState, getStateValues } from '../../features/user/userSlice'
+import GooglePlacesHook from '../../hooks/GooglePlacesHook'
 import { getUserFromLocalStorage } from '../../utils/localStorage'
 import FormInput from '../FormInput'
 
 const AdminRegisterUpdateUserInput = ({ method, _id }) => {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state)
+  const genderValue = [
+    'male',
+    'female',
+    'transgender',
+    'non-binary/non-conforming',
+    'prefer not to respond',
+  ]
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     if (!user.name || !user.email) {
       return toast.error('Please Provide Name and Email.')
     }
+
     const { token } = getUserFromLocalStorage()
     try {
       const result = await method(`/auth/users${_id ? `/${_id}` : ''}`, user, {
@@ -26,6 +37,7 @@ const AdminRegisterUpdateUserInput = ({ method, _id }) => {
       }
       toast.success(result.statusText)
     } catch (error) {
+      console.log(error)
       toast.warning(error.response?.data?.msg)
     }
   }
@@ -46,7 +58,7 @@ const AdminRegisterUpdateUserInput = ({ method, _id }) => {
 
   return (
     <>
-      <form className='form' onSubmit={handleSubmit}>
+      <Wrapper className='form' onSubmit={handleSubmit}>
         <div className='box-1'>
           {/* name  */}
           <FormInput name='name' value={user?.name} onChange={handleChange} />
@@ -57,14 +69,33 @@ const AdminRegisterUpdateUserInput = ({ method, _id }) => {
             value={user?.lastName}
             onChange={handleChange}
           />
-          {/* phone */}
-          <FormInput
-            label={'Date Of Birth'}
-            name='dateOfBirth'
-            type='date'
-            value={user?.dateOfBirth}
-            onChange={handleChange}
-          />
+          {/* date of birth */}
+          <div className='date-input'>
+            <FormInput
+              label={'Date Of Birth'}
+              name='dateOfBirth'
+              type='date'
+              value={user?.dateOfBirth ? user.dateOfBirth : ''}
+              onChange={handleChange}
+            />
+          </div>
+          {/* gender */}
+          <div className='gender'>
+            <label htmlFor='gender'>Gender</label>
+            <select name='gender' value={user?.gender} onChange={handleChange}>
+              {genderValue.map((item, index) => {
+                return (
+                  <option
+                    select={user?.gender?.toString()}
+                    key={index}
+                    value={item}
+                  >
+                    {item}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
           {/* phone */}
           <FormInput
             name='phone'
@@ -77,34 +108,87 @@ const AdminRegisterUpdateUserInput = ({ method, _id }) => {
         </div>
         {/* ====================Box Divider=============*/}
         <div className='box-2'>
-          {/* addaddress  */}
+          <GooglePlacesHook />
+          <div className='box-2-inline'>
+            {/* apartment  */}
+            <FormInput
+              name='apartment'
+              label={'Apartment Number'}
+              placeholder={'#'}
+              value={user?.apartment}
+              onChange={handleChange}
+            />
+            {/* houseNo/buildingNo  */}
+            <FormInput
+              name='house'
+              placeholder={'#'}
+              label={'House / Building Number'}
+              value={user?.house}
+              onChange={handleChange}
+            />
+          </div>
+          {/* street*/}
           <FormInput
-            name='address'
-            value={user?.address}
+            name='street'
+            label={'Street Address'}
+            value={user?.street}
             onChange={handleChange}
           />
-          {/* city  */}
-          <FormInput name='city' value={user?.city} onChange={handleChange} />
-          {/* province */}
-          <FormInput
-            name='province'
-            value={user?.province}
-            onChange={handleChange}
-          />
-          {/* postalCode */}
-          <FormInput
-            name='postalCode'
-            label='Postal Code'
-            value={user?.postalCode}
-            onChange={handleChange}
-          />
+          <div className='box-2-inline'>
+            {/* city  */}
+            <FormInput name='city' value={user?.city} onChange={handleChange} />
+            {/* province */}
+            <FormInput
+              name='province'
+              value={user?.province}
+              onChange={handleChange}
+            />
+          </div>
+          <div className='box-2-inline'>
+            <FormInput
+              name='country'
+              value={user?.country}
+              onChange={handleChange}
+            />
+            {/* postalCode */}
+            <FormInput
+              name='postalCode'
+              label='Postal Code'
+              value={user?.postalCode}
+              onChange={handleChange}
+            />
+          </div>
+          {/* country */}
+
           <button className='btn' type='submit'>
             Submit
           </button>
         </div>
-      </form>
+      </Wrapper>
     </>
   )
 }
+const Wrapper = styled.form`
+  label {
+    text-transform: uppercase;
+  }
+  .date-input {
+    input {
+      text-transform: uppercase;
+    }
+  }
+  select {
+    text-transform: uppercase;
+  }
+  .gender {
+    padding: 5px 0;
+    display: grid;
+  }
+  .box-2-inline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+`
 
 export default AdminRegisterUpdateUserInput

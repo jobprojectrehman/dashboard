@@ -125,7 +125,7 @@ const Search = () => {
           <input
             type='text'
             name='searchAddress'
-            placeholder='Address'
+            placeholder='Street Name'
             value={searchAddress}
             onChange={handleChange}
           />

@@ -16,6 +16,10 @@ import {
   showWarning,
 } from '../../features/functions/functionSlice'
 import DeleteAllWarning from '../DeleteAllWarning'
+import maleAvatar from '../../images/Male.svg'
+import femaleAvatar from '../../images/female.svg'
+import undefinedAvatar from '../../images/undefined.svg'
+import styled from 'styled-components'
 
 const List = () => {
   const dispatch = useDispatch()
@@ -86,7 +90,7 @@ const List = () => {
         )}
       </div>
       {/* show table */}
-      <table>
+      <Wrapper>
         <tbody>
           <tr>
             <th>
@@ -96,6 +100,7 @@ const List = () => {
                 onChange={handleSelectAll}
               />
             </th>
+            <th>Avatar</th>
             <th>First Name</th>
             <th>Email</th>
             <th>Phone</th>
@@ -118,10 +123,32 @@ const List = () => {
                     onChange={() => handleSelectOne(item._id)}
                   />
                 </td>
+                <td className='avatar'>
+                  <div className='div'>
+                    {item.gender === 'male' && (
+                      <img src={maleAvatar} alt='male'></img>
+                    )}
+                    {item.gender === 'female' && (
+                      <img src={femaleAvatar} alt='male'></img>
+                    )}
+                    {item.gender === 'transgender' && (
+                      <img src={undefinedAvatar} alt='prefer not to say'></img>
+                    )}
+                    {item.gender === 'non-binary/non-conforming' && (
+                      <img src={undefinedAvatar} alt='prefer not to say'></img>
+                    )}
+                    {item.gender === 'prefer not to respond' && (
+                      <img src={undefinedAvatar} alt='prefer not to say'></img>
+                    )}
+                  </div>
+                </td>
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td>{item.phone}</td>
-                <td>{item.address}</td>
+                <td className='address'>
+                  <span className='house'>{item.house}</span>
+                  <span>{item.street}</span>
+                </td>
                 <td>{item.postalCode}</td>
                 <td>{formatDate(item.createdAt)}</td>
                 <td>
@@ -139,9 +166,27 @@ const List = () => {
             )
           })}
         </tbody>
-      </table>
+      </Wrapper>
     </ListWrapper>
   )
 }
+const Wrapper = styled.table`
+  .avatar {
+    overflow: hidden;
+    width: 70px;
+    .div {
+      max-width: 70px;
+    }
 
+    img {
+      width: 100%;
+      margin-bottom: -15px;
+    }
+  }
+  .address {
+    .house {
+      margin-right: 3px;
+    }
+  }
+`
 export default List

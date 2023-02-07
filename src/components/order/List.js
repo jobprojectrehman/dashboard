@@ -116,13 +116,18 @@ const List = () => {
                   />
                 </td>
                 <td className='image-holder'>
-                  {item.cart.map((item) => (
-                    <img src={item.uploadImage[0].secure_url} alt='' />
+                  {item.cart.map((item, index) => (
+                    <img
+                      key={index}
+                      src={item.uploadImage[0].secure_url}
+                      alt=''
+                    />
                   ))}
                 </td>
                 <td>
-                  {item.cart.map((item) => (
+                  {item.cart.map((item, index) => (
                     <div
+                      key={index}
                       style={{
                         height: '105px',
                         display: 'grid',
@@ -135,8 +140,9 @@ const List = () => {
                   ))}
                 </td>
                 <td>
-                  {item.cart.map((item) => (
+                  {item.cart.map((item, index) => (
                     <div
+                      key={index}
                       style={{
                         height: '105px',
                         display: 'grid',
@@ -149,8 +155,9 @@ const List = () => {
                   ))}
                 </td>
                 <td>
-                  {item.cart.map((item) => (
+                  {item.cart.map((item, index) => (
                     <div
+                      key={index}
                       style={{
                         height: '105px',
                         display: 'grid',

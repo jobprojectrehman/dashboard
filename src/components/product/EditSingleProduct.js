@@ -74,9 +74,9 @@ const EditSingleProduct = () => {
           </div>
         </div>
         {/* ===============div divider========= */}
-        <div>
+        <div className='stock'>
           {/* Stock  */}
-          <div className='stock'>
+          <div>
             <label className='form-label' htmlFor='stock'>
               Stock
             </label>
@@ -156,9 +156,10 @@ const Wrapper = styled.div`
   }
   .stock {
     select {
-      color: black;
+      color: var(--grey-9);
     }
   }
+  /* git */
   .feature {
     padding-top: 1rem;
     label {
