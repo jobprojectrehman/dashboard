@@ -1,16 +1,9 @@
 import { useLoadScript } from '@react-google-maps/api'
 import usePlacesAutocomplete, { getGeocode } from 'use-places-autocomplete'
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from '@reach/combobox'
-import '@reach/combobox/styles.css'
-
 import { useDispatch } from 'react-redux'
 import { getAddressValues } from '../features/user/userSlice'
+import styled from 'styled-components'
+import { useRef } from 'react'
 
 // This is outcome from address
 
@@ -40,6 +33,7 @@ const GooglePlacesHook = () => {
 }
 // We have this approach because this component must load after isLoaded useLoadScript
 const PlacesAutocomplete = () => {
+  const inputWithRef = useRef()
   const dispatch = useDispatch()
   const {
     ready,
@@ -56,6 +50,7 @@ const PlacesAutocomplete = () => {
   })
 
   const handleSelect = async (address) => {
+    console.log(address)
     setValue(address, false)
     clearSuggestions()
 
@@ -82,27 +77,55 @@ const PlacesAutocomplete = () => {
       })
     )
   }
+
   // state code=======End
   return (
-    <Combobox onSelect={handleSelect}>
-      <label htmlFor='form-label'>Search your address</label>
-      <ComboboxInput
-        value={value}
+    <Wrapper>
+      <label className='form-label' htmlFor='address'>
+        Search your address
+      </label>
+      <input
+        ref={inputWithRef}
+        type='text'
+        value={value?.target?.input}
         onChange={(e) => setValue(e.target.value)}
-        disabled={!ready}
         className='form-input'
-        placeholder='Search an address'
+        placeholder='TYPE HERE'
+        disabled={!ready}
       />
-      <ComboboxPopover>
-        <ComboboxList>
-          {status === 'OK' &&
-            data.map(({ place_id, description }) => (
-              <ComboboxOption key={place_id} value={description} />
-            ))}
-        </ComboboxList>
-      </ComboboxPopover>
-    </Combobox>
+      {status === 'OK' && (
+        <ul style={{ width: `${inputWithRef.current.clientWidth}px` }}>
+          {data.map((item, index) => {
+            return (
+              <li key={index} onClick={() => handleSelect(item.description)}>
+                {item.description}
+              </li>
+            )
+          })}
+        </ul>
+      )}
+    </Wrapper>
   )
 }
+const Wrapper = styled.div`
+  input {
+    position: relative;
+  }
 
+  ul {
+    position: absolute;
+    background-color: var(--white);
+    margin: 0;
+    box-shadow: var(--shadow-2);
+
+    li {
+      padding: 5px 10px;
+
+      :hover {
+        cursor: pointer;
+        background-color: var(--grey-1);
+      }
+    }
+  }
+`
 export default GooglePlacesHook
