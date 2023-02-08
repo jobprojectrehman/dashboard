@@ -1,4 +1,4 @@
-import { React, useState, useRef } from 'react'
+import { React, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -6,39 +6,38 @@ import styled from 'styled-components'
 import {
   forgetPasswordToggle,
   loginUserThunk,
-  registerUserThunk,
 } from '../features/user/userSlice'
 import ForgetPassword from '../components/user/ForgetPassword'
+import FormInput from '../components/FormInput'
+
+const initialState = {
+  email: '',
+  password: '',
+  forgetPassword: false,
+  isLoading: false,
+}
 
 const Register = () => {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state)
-
-  const [login, setLogin] = useState(true)
-  const nameRef = useRef()
-  const emailRef = useRef()
-  const passwordRef = useRef()
+  const [state, setState] = useState(initialState)
+  const { email, password, isLoading } = state
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const name = nameRef.current?.value.toLowerCase()
-    const email = emailRef.current.value.toLowerCase()
-    const password = passwordRef.current.value
 
-    if (!email || !password || (!login && !name)) {
-      toast.error('Please enter your credentials.')
-      return
+    if (!email) {
+      return toast.error('Please enter your email.')
     }
-    if (login) {
-      dispatch(loginUserThunk({ email, password }))
-      return
-    } else {
-      dispatch(registerUserThunk({ name, email, password }))
+    if (!password) {
+      return toast.error('Please enter your Password.')
     }
+    dispatch(loginUserThunk({ email, password }))
   }
-  // handle Login
-  const handleLogin = () => {
-    setLogin(!login)
+  const handleChange = (e) => {
+    const name = e.target.name
+    const value = e.target.value
+    setState({ ...state, [name]: value })
   }
 
   // handle Forget Password
@@ -46,7 +45,7 @@ const Register = () => {
     dispatch(forgetPasswordToggle())
   }
 
-  if (user.isLoading) {
+  if (isLoading) {
     return (
       <div>
         <h1 className='title'>Loading...</h1>
@@ -59,47 +58,29 @@ const Register = () => {
   }
   return (
     <Wrapper>
+      {/* forget Password */}
       {user.forgetPassword ? (
         <ForgetPassword />
       ) : (
+        // login form
         <form className='form' onSubmit={handleSubmit}>
-          {/* name input */}
-          {!login && (
-            <div>
-              <label className='form-label' htmlFor='name'>
-                Name
-              </label>
-              <input className='form-input' ref={nameRef} type='text' />
-            </div>
-          )}
-          {/* email input */}
-          <label
-            style={{ textTransform: 'lowercase' }}
-            className='form-label'
-            htmlFor='email'
-          >
-            Email - jobprojectrehman@gmail.com
-          </label>
-          <input className='form-input' ref={emailRef} type='text' />
-          {/* name input */}
-          <label
-            style={{ textTransform: 'lowercase' }}
-            className='form-label'
-            htmlFor='password'
-          >
-            Password - jobprojectrehman
-          </label>
-          <input className='form-input' ref={passwordRef} type='password' />
-          <div className='login-register-forget'>
-            {login ? (
-              <button type='submit' className='btn'>
-                LogIn
-              </button>
-            ) : (
-              <button type='submit' className='btn'>
-                Register
-              </button>
-            )}
+          {/* Email */}
+          <FormInput
+            name='email'
+            type={'email'}
+            label={'Email - jobprojectrehman@gmail.com'}
+            value={email}
+            onChange={handleChange}
+          />
+          {/* Password */}
+          <FormInput
+            name='password'
+            type={'password'}
+            label={'Password - jobprojectrehman'}
+            value={password}
+            onChange={handleChange}
+          />
+          <div className='buttons'>
             <button
               className='btn'
               type='button'
@@ -107,18 +88,10 @@ const Register = () => {
             >
               Forget Password
             </button>
-          </div>
-
-          <p>
-            {login ? 'You are not a member ?' : 'Are you a member ?'}
-            <button
-              className='login-button'
-              onClick={handleLogin}
-              type='button'
-            >
-              {login ? 'Register' : 'LogIn'}
+            <button className='btn' type='submit'>
+              Login
             </button>
-          </p>
+          </div>
         </form>
       )}
     </Wrapper>
@@ -128,26 +101,11 @@ const Wrapper = styled.div`
   min-height: calc(100vh - 3.2rem);
   form {
     margin-top: 6rem;
-  }
-  .login-button {
-    background: var(--grey-3);
-    border: transparent;
-    font-size: large;
-    border-bottom: 2px solid var(--primary-7);
-    margin-left: 1rem;
-    border-radius: var(--radius);
-
-    padding: 5px;
-    transition: var(--transition);
-
-    :hover {
-      cursor: pointer;
-      background: var(--primary-5);
-      color: white;
+    label {
+      text-transform: lowercase;
     }
   }
-
-  .login-register-forget {
+  .buttons {
     display: flex;
     justify-content: space-between;
   }

@@ -144,6 +144,7 @@ const AdminRegisterUpdateUserInput = ({ method, _id }) => {
               onChange={handleChange}
             />
           </div>
+          {/* country */}
           <div className='box-2-inline'>
             <FormInput
               name='country'
@@ -158,7 +159,6 @@ const AdminRegisterUpdateUserInput = ({ method, _id }) => {
               onChange={handleChange}
             />
           </div>
-          {/* country */}
 
           <button className='btn' type='submit'>
             Submit

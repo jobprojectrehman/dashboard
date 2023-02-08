@@ -302,7 +302,6 @@ const userSlice = createSlice({
       state[name] = value
     },
     getAddressValues: (state, { payload }) => {
-      console.log(payload)
       addObjectInState(payload, state)
     },
 
